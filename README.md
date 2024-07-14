@@ -36,3 +36,12 @@ https://qiita.com/Syoitu/items/8e7e3215fb7ac9dabc3a
 go get github.com/gin-gonic/gin
 ```
 
+### 起動方法
+Docker
+```shell
+# PostgreSQLの起動
+docker-compose up -d
+
+# Goの開始
+go run main.go
+```
