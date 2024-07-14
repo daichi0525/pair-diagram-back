@@ -1,5 +1,8 @@
 # pair-diagram-back
 
+## goポイント
+https://qiita.com/k-penguin-sato/items/62dfe0f93f56e4bf9157
+
 ## go init
 
 https://qiita.com/TakanoriVega/items/6d7210147c289b45298a

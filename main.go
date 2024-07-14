@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/daichi0525/pair-diagram-back.git/handler"
+	"github.com/daichi0525/pair-diagram-back.git/repository"
+	"github.com/daichi0525/pair-diagram-back.git/usecase"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -21,10 +24,16 @@ func main() {
 	}
 	fmt.Println("db connected!!")
 
+	todoHandler := handler.NewTodoHandler(
+		usecase.NewTodoUsecase(
+			repository.NewTodoRepository()
+		)
+	)
+
 	r := gin.Default()
-	r.GET("/", sampleApi)
+	r.GET("/", todoHandler)
+	// r.POST("/login", todoHandler)
 	// r.GET("/login", sampleApi)
-	// r.POST("/login", sampleApi)
 	r.Run(":8080")
 }
 
