@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -18,6 +20,19 @@ func main() {
 		connect(dialector, 100)
 	}
 	fmt.Println("db connected!!")
+
+	r := gin.Default()
+	r.GET("/", sampleApi)
+	// r.GET("/login", sampleApi)
+	// r.POST("/login", sampleApi)
+	r.Run(":8080")
+}
+
+func sampleApi(c *gin.Context) {
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Hello World",
+	})
 }
 
 func connect(dialector gorm.Dialector, count uint) {

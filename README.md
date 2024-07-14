@@ -27,6 +27,7 @@ https://zenn.dev/yasu2122/articles/045183cd36add5
 https://qiita.com/katsuomi/items/d1e6625ae9a5b663e11f
 
 ### gin
+https://qiita.com/Syoitu/items/8e7e3215fb7ac9dabc3a
 
 ```
 go get github.com/gin-gonic/gin
