@@ -18,7 +18,7 @@ func NewTodoHandler(todoUsecase *usecase.TodoUsecase) *TodoHandler {
 }
 
 func (th *TodoHandler) GetTodos(c *gin.Context) {
-	userId := c.Param("user_id")
+	// userId := c.Param("user_id")
 	todos, err := th.todoUsecase.GetTodos()
 
 	if err != nil {

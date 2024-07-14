@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"log"
 	"time"
 
 	"github.com/daichi0525/pair-diagram-back.git/handler"
+	"github.com/daichi0525/pair-diagram-back.git/model"
 	"github.com/daichi0525/pair-diagram-back.git/repository"
 	"github.com/daichi0525/pair-diagram-back.git/usecase"
 	"github.com/gin-gonic/gin"
@@ -13,47 +14,58 @@ import (
 	"gorm.io/gorm"
 )
 
-var Db *gorm.DB
+var (
+	db *gorm.DB
+)
 
 func main() {
 	dsn := "host=127.0.0.1 port=5432 user=pair-diagram-postgres password=pair-diagram-postgres dbname=pair-diagram-postgres sslmode=disable"
-	dialector := postgres.Open(dsn)
 	var err error
-	if Db, err = gorm.Open(dialector); err != nil {
-		connect(dialector, 100)
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Printf("Database connected Errro.")
 	}
 	fmt.Println("db connected!!")
 
+	err = db.AutoMigrate(&model.Todo{})
+	if err != nil {
+		panic(fmt.Sprintf("failed to migrate database: %v", err))
+	}
+	// 初期データを挿入
+	initializeTodos(db)
+
 	todoHandler := handler.NewTodoHandler(
 		usecase.NewTodoUsecase(
-			repository.NewTodoRepository()
-		)
+			repository.NewTodoRepository(),
+		),
 	)
 
 	r := gin.Default()
-	r.GET("/", todoHandler)
+	r.GET("/", todoHandler.GetTodos)
 	// r.POST("/login", todoHandler)
 	// r.GET("/login", sampleApi)
 	r.Run(":8080")
 }
 
-func sampleApi(c *gin.Context) {
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Hello World",
-	})
-}
-
-func connect(dialector gorm.Dialector, count uint) {
-	var err error
-	if Db, err = gorm.Open(dialector); err != nil {
-		if count > 1 {
-			time.Sleep(time.Second * 2)
-			count--
-			fmt.Printf("retry... count:%v\n", count)
-			connect(dialector, count)
-			return
-		}
-		panic(err.Error())
+func initializeTodos(db *gorm.DB) {
+	todos := []model.Todo{
+		{UserId: "user1", Title: "Todo 1", Deadline: time.Now().AddDate(0, 1, 0), Detail: "Detail 1", Completed: false},
+		{UserId: "user2", Title: "Todo 2", Deadline: time.Now().AddDate(0, 1, 1), Detail: "Detail 2", Completed: false},
+		{UserId: "user3", Title: "Todo 3", Deadline: time.Now().AddDate(0, 1, 2), Detail: "Detail 3", Completed: false},
+		{UserId: "user4", Title: "Todo 4", Deadline: time.Now().AddDate(0, 1, 3), Detail: "Detail 4", Completed: false},
+		{UserId: "user5", Title: "Todo 5", Deadline: time.Now().AddDate(0, 1, 4), Detail: "Detail 5", Completed: false},
+		{UserId: "user6", Title: "Todo 6", Deadline: time.Now().AddDate(0, 1, 5), Detail: "Detail 6", Completed: false},
+		{UserId: "user7", Title: "Todo 7", Deadline: time.Now().AddDate(0, 1, 6), Detail: "Detail 7", Completed: false},
+		{UserId: "user8", Title: "Todo 8", Deadline: time.Now().AddDate(0, 1, 7), Detail: "Detail 8", Completed: false},
+		{UserId: "user9", Title: "Todo 9", Deadline: time.Now().AddDate(0, 1, 8), Detail: "Detail 9", Completed: false},
+		{UserId: "user10", Title: "Todo 10", Deadline: time.Now().AddDate(0, 1, 9), Detail: "Detail 10", Completed: false},
 	}
+
+	for _, todo := range todos {
+		todo.CreatedAt = time.Now()
+		todo.UpdatedAt = time.Now()
+		db.Create(&todo)
+	}
+
+	fmt.Println("Initial todos inserted!")
 }
