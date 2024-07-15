@@ -20,37 +20,59 @@ func Init() {
 		log.Printf("Database connected Errro.")
 	}
 
-	err = db.AutoMigrate(&model.Todo{})
+	err = db.AutoMigrate(&model.Schedule{})
+	if err != nil {
+		panic(fmt.Sprintf("failed to migrate database: %v", err))
+	}
+
+	err = db.AutoMigrate(&model.User{})
 	if err != nil {
 		panic(fmt.Sprintf("failed to migrate database: %v", err))
 	}
 	// 初期データを挿入
-	initializeTodos(db)
+	initializeData(db)
 	dbInstance = db
 
 }
 
-func initializeTodos(db *gorm.DB) {
-	todos := []model.Todo{
-		{UserId: "user1", Title: "Todo 1", Deadline: time.Now().AddDate(0, 1, 0), Detail: "Detail 1", Completed: false},
-		{UserId: "user2", Title: "Todo 2", Deadline: time.Now().AddDate(0, 1, 1), Detail: "Detail 2", Completed: false},
-		{UserId: "user3", Title: "Todo 3", Deadline: time.Now().AddDate(0, 1, 2), Detail: "Detail 3", Completed: false},
-		{UserId: "user4", Title: "Todo 4", Deadline: time.Now().AddDate(0, 1, 3), Detail: "Detail 4", Completed: false},
-		{UserId: "user5", Title: "Todo 5", Deadline: time.Now().AddDate(0, 1, 4), Detail: "Detail 5", Completed: false},
-		{UserId: "user6", Title: "Todo 6", Deadline: time.Now().AddDate(0, 1, 5), Detail: "Detail 6", Completed: false},
-		{UserId: "user7", Title: "Todo 7", Deadline: time.Now().AddDate(0, 1, 6), Detail: "Detail 7", Completed: false},
-		{UserId: "user8", Title: "Todo 8", Deadline: time.Now().AddDate(0, 1, 7), Detail: "Detail 8", Completed: false},
-		{UserId: "user9", Title: "Todo 9", Deadline: time.Now().AddDate(0, 1, 8), Detail: "Detail 9", Completed: false},
-		{UserId: "user10", Title: "Todo 10", Deadline: time.Now().AddDate(0, 1, 9), Detail: "Detail 10", Completed: false},
+func initializeData(db *gorm.DB) {
+	// テストデータを作成
+	schedules := []model.Schedule{
+		{UserId: "user1", Title: "Meeting with Bob", Priority: time.Now().Add(48 * time.Hour), Start: "2024-07-16T09:00:00Z", Required: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserId: "user2", Title: "Project deadline", Priority: time.Now().Add(72 * time.Hour), Start: "2024-07-17T12:00:00Z", Required: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserId: "user3", Title: "Gym workout", Priority: time.Now().Add(24 * time.Hour), Start: "2024-07-15T17:00:00Z", Required: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserId: "user4", Title: "Doctor appointment", Priority: time.Now().Add(120 * time.Hour), Start: "2024-07-18T10:00:00Z", Required: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserId: "user5", Title: "Team meeting", Priority: time.Now().Add(96 * time.Hour), Start: "2024-07-19T15:00:00Z", Required: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserId: "user6", Title: "Call with client", Priority: time.Now().Add(36 * time.Hour), Start: "2024-07-15T13:00:00Z", Required: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserId: "user7", Title: "Dentist appointment", Priority: time.Now().Add(60 * time.Hour), Start: "2024-07-16T11:00:00Z", Required: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserId: "user8", Title: "Conference", Priority: time.Now().Add(144 * time.Hour), Start: "2024-07-20T09:00:00Z", Required: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserId: "user9", Title: "Lunch with friend", Priority: time.Now().Add(168 * time.Hour), Start: "2024-07-21T12:00:00Z", Required: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserId: "user10", Title: "Finish report", Priority: time.Now().Add(200 * time.Hour), Start: "2024-07-22T17:00:00Z", Required: true, CreatedAt: time.Now(), UpdatedAt: time.Now()},
 	}
 
-	for _, todo := range todos {
-		todo.CreatedAt = time.Now()
-		todo.UpdatedAt = time.Now()
-		db.Create(&todo)
+	// テストデータをデータベースに保存
+	for _, schedule := range schedules {
+		db.Create(&schedule)
 	}
 
-	fmt.Println("Initial todos inserted!")
+	// テストデータを作成
+	users := []model.User{
+		{UserName: "Alice", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserName: "Bob", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserName: "Charlie", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserName: "David", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserName: "Eve", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserName: "Frank", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserName: "Grace", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserName: "Hank", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserName: "Ivy", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{UserName: "Jack", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+	}
+	// テストデータをデータベースに保存
+	for _, user := range users {
+		db.Create(&user)
+	}
+
 }
 
 func GetDbInstantce() *gorm.DB {

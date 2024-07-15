@@ -7,24 +7,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type TodoHandler struct {
-	todoUsecase *usecase.TodoUsecase
+type ScheduleHandler struct {
+	scheduleUsecase *usecase.ScheduleUsecase
 }
 
-func NewTodoHandler(todoUsecase *usecase.TodoUsecase) *TodoHandler {
-	return &TodoHandler{
-		todoUsecase: todoUsecase,
+func NewScheduleHandler(scheduleUsecase *usecase.ScheduleUsecase) *ScheduleHandler {
+	return &ScheduleHandler{
+		scheduleUsecase: scheduleUsecase,
 	}
 }
 
-func (th *TodoHandler) GetTodos(c *gin.Context) {
+func (th *ScheduleHandler) GetSchedules(c *gin.Context) {
 	// userId := c.Param("user_id")
-	todos, err := th.todoUsecase.GetTodos()
+	schedules, err := th.scheduleUsecase.GetSchedules()
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "値がおかしいので確認してください",
 		})
 	}
-	c.JSON(http.StatusOK, todos)
+	c.JSON(http.StatusOK, schedules)
 }

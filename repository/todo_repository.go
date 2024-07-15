@@ -8,19 +8,19 @@ import (
 	"gorm.io/gorm"
 )
 
-type TodoRepository struct {
+type ScheduleRepository struct {
 	Database *gorm.DB
 }
 
-func NewTodoRepository() *TodoRepository {
-	return &TodoRepository{
+func NewScheduleRepository() *ScheduleRepository {
+	return &ScheduleRepository{
 		Database: db.GetDbInstantce(),
 	}
 }
 
-func (todoRepo *TodoRepository) GetTodos() ([]model.Todo, error) {
-	result := []model.Todo{}
-	err := todoRepo.Database.Find(&result)
+func (scheduleRepo *ScheduleRepository) GetSchedules() ([]model.Schedule, error) {
+	result := []model.Schedule{}
+	err := scheduleRepo.Database.Find(&result)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return result, err.Error

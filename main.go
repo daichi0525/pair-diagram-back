@@ -13,9 +13,9 @@ import (
 
 func main() {
 	db.Init()
-	todoHandler := handler.NewTodoHandler(
-		usecase.NewTodoUsecase(
-			repository.NewTodoRepository(),
+	scheduleHandler := handler.NewScheduleHandler(
+		usecase.NewScheduleUsecase(
+			repository.NewScheduleRepository(),
 		),
 	)
 
@@ -31,8 +31,8 @@ func main() {
 	}
 	r.Use(cors.New(config))
 
-	r.GET("/", todoHandler.GetTodos)
-	// r.POST("/login", todoHandler)
+	r.GET("/", scheduleHandler.GetSchedules)
+	// r.POST("/login", scheduleHandler)
 	// r.GET("/login", sampleApi)
 	r.Run(":8080")
 }

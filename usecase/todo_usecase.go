@@ -5,18 +5,18 @@ import (
 	"github.com/daichi0525/pair-diagram-back.git/repository"
 )
 
-type TodoUsecase struct {
-	todoRepository *repository.TodoRepository
+type ScheduleUsecase struct {
+	scheduleRepository *repository.ScheduleRepository
 }
 
-func NewTodoUsecase(todoRepository *repository.TodoRepository) *TodoUsecase {
-	return &TodoUsecase{
-		todoRepository: todoRepository,
+func NewScheduleUsecase(scheduleRepository *repository.ScheduleRepository) *ScheduleUsecase {
+	return &ScheduleUsecase{
+		scheduleRepository: scheduleRepository,
 	}
 }
 
-func (tu *TodoUsecase) GetTodos() ([]model.Todo, error) {
-	result, err := tu.todoRepository.GetTodos()
+func (tu *ScheduleUsecase) GetSchedules() ([]model.Schedule, error) {
+	result, err := tu.scheduleRepository.GetSchedules()
 	if err != nil {
 		return result, err
 	}
