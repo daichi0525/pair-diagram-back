@@ -35,6 +35,13 @@ https://qiita.com/Syoitu/items/8e7e3215fb7ac9dabc3a
 ```
 go get github.com/gin-gonic/gin
 ```
+### CORS
+
+```
+go get github.com/rs/cors
+go get github.com/gin-contrib/cors
+
+```
 
 ### 起動方法
 Docker
