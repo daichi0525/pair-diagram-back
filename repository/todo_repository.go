@@ -14,7 +14,7 @@ type ScheduleRepository struct {
 
 func NewScheduleRepository() *ScheduleRepository {
 	return &ScheduleRepository{
-		Database: db.GetDbInstantce(),
+		Database: db.GetDbInstance(),
 	}
 }
 
