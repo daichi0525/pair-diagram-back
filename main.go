@@ -32,7 +32,8 @@ func main() {
 	r.Use(cors.New(config))
 
 	r.GET("/", scheduleHandler.GetSchedules)
+	r.PUT("/", scheduleHandler.UpdateSchedule)
 	// r.POST("/login", scheduleHandler)
 	// r.GET("/login", sampleApi)
-	r.Run(":8080")
+	r.Run("localhost:8080")
 }
