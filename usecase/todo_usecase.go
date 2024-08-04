@@ -35,6 +35,10 @@ func (tu *ScheduleUsecase) GetSchedules() ([]model.Schedule, error) {
 	return result, err
 }
 
+func (tu *ScheduleUsecase) InsertSchedule(schedule model.Schedule) error {
+	return tu.scheduleRepository.InsertSchedule(schedule)
+}
+
 // UpdateSchedule
 func (tu *ScheduleUsecase) UpdateSchedule(scheduleID uint, title string, startTime time.Time, endTime time.Time) error {
 	return tu.scheduleRepository.UpdateSchedule(scheduleID, title, startTime, endTime)

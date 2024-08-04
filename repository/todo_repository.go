@@ -44,6 +44,10 @@ func (scheduleRepo *ScheduleRepository) GetSchedules() ([]model.Schedule, error)
 	return result, nil
 }
 
+func (scheduleRepo *ScheduleRepository) InsertSchedule(schedule model.Schedule) error {
+	return scheduleRepo.Database.Save(&schedule).Error
+}
+
 // UpdateSchedule
 func (scheduleRepo *ScheduleRepository) UpdateSchedule(scheduleID uint, title string, startTime time.Time, endTime time.Time) error {
 	var schedule model.Schedule

@@ -32,6 +32,7 @@ func main() {
 	r.Use(cors.New(config))
 
 	r.GET("/", scheduleHandler.GetSchedules)
+	r.POST("/", scheduleHandler.InsertSchedule)
 	r.PUT("/", scheduleHandler.UpdateSchedule)
 	// r.POST("/login", scheduleHandler)
 	// r.GET("/login", sampleApi)

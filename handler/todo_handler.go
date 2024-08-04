@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/daichi0525/pair-diagram-back.git/model"
 	"github.com/daichi0525/pair-diagram-back.git/usecase"
 	"github.com/gin-gonic/gin"
 )
@@ -39,6 +40,23 @@ func (th *ScheduleHandler) GetSchedules(c *gin.Context) {
 
 	// 正常にスケジュールを取得できた場合、クライアントに対して HTTP 200 ステータスコードとスケジュールのデータを返します。
 	c.JSON(http.StatusOK, schedules)
+}
+
+func (th *ScheduleHandler) InsertSchedule(c *gin.Context) {
+
+	var requestData model.Schedule
+	if err := c.ShouldBindJSON(&requestData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "JSONエラーです。", "detail": err.Error()})
+		return
+	}
+
+	err := th.scheduleUsecase.InsertSchedule(requestData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "todoの更新中にエラーが発生しました", "detail": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "スケジュールの挿入に成功しました"})
 }
 
 // UpdateSchedule メソッドの追加
