@@ -30,7 +30,7 @@ func (scheduleRepo *ScheduleRepository) GetSchedules() ([]model.Schedule, error)
 	result := []model.Schedule{}
 
 	// データベースからスケジュールを取得し、result に格納
-	err := scheduleRepo.Database.Find(&result)
+	err := scheduleRepo.Database.Order("user_id asc").Find(&result)
 
 	// エラーが発生した場合
 	if err.Error != nil {
